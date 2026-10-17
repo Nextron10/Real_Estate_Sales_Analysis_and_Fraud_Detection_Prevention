@@ -1,0 +1,45 @@
+.work/
+Raw/
+# Original response workbook remains private in its current local location
+data/sample/
+.env
+.env.*
+
+# Private inputs, planning history and earlier drafts
+private/
+Documents/
+
+# Phase 2 documents remain local until completed
+docs/Preliminary_Analysis.docx
+docs/Insights_and_Recommendations.docx
+
+# Credentials and local service configuration
+*.pem
+*.key
+*.pfx
+*.p12
+credentials*.json
+*secrets*.json
+local.settings.json
+*.tfstate
+*.tfstate.*
+.terraform/
+.azure/
+*.publishsettings
+
+# Local builds, caches and Office temporary files
+node_modules/
+__pycache__/
+*.pyc
+~$*
+.venv/
+venv/
+*.log
+*.inspect.ndjson
+.vscode/settings.json
+.vscode/launch.json
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+evidence/phase1_sql_verification.csv
+evidence/simplified_sql_azure_verification.csv
+AGENTS.md

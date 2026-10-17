@@ -1,0 +1,1201 @@
+{
+    "name": "pl_load_suryavan",
+    "properties": {
+        "activities": [
+            {
+                "name": "cp_plots",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ExcelSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        }
+                    },
+                    "sink": {
+                        "type": "AzurePostgreSqlSink",
+                        "writeBatchSize": 1000000,
+                        "writeBatchTimeout": "00:30:00",
+                        "writeMethod": "Upsert",
+                        "upsertSettings": {
+                            "keys": [
+                                "plot_id"
+                            ]
+                        }
+                    },
+                    "enableStaging": false,
+                    "parallelCopies": 1,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "plot_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "plot_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "zone",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "zone",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "block",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "block",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "plot_no",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "plot_no",
+                                    "type": "Int32",
+                                    "physicalType": "integer"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "area_gaj",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "area_gaj",
+                                    "type": "Int32",
+                                    "physicalType": "integer"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "is_corner",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "is_corner",
+                                    "type": "Boolean",
+                                    "physicalType": "boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "status",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "status",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "block_reason",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "block_reason",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": false,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "ds_xlsx_plots",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "ds_pg_plots",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "cp_bookings",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "cp_brokers",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ExcelSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        }
+                    },
+                    "sink": {
+                        "type": "AzurePostgreSqlSink",
+                        "writeBatchSize": 1000000,
+                        "writeBatchTimeout": "00:30:00",
+                        "writeMethod": "Upsert",
+                        "upsertSettings": {
+                            "keys": [
+                                "booking_id"
+                            ]
+                        }
+                    },
+                    "enableStaging": false,
+                    "parallelCopies": 1,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "booking_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "booking_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "plot_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "plot_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "broker_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "broker_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "submitted_at",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "submitted_at",
+                                    "type": "DateTime",
+                                    "physicalType": "timestamp without time zone"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "booked_on",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "booked_on",
+                                    "type": "DateTime",
+                                    "physicalType": "date"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "sold_on",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "sold_on",
+                                    "type": "DateTime",
+                                    "physicalType": "date"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "cancelled_on",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "cancelled_on",
+                                    "type": "DateTime",
+                                    "physicalType": "date"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "registered_on",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "registered_on",
+                                    "type": "DateTime",
+                                    "physicalType": "date"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "record_type",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "record_type",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "status",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "status",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "disc_code",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "disc_code",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "price",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "price",
+                                    "type": "Decimal",
+                                    "physicalType": "numeric"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "pay_plan",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "pay_plan",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "related_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "related_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "resolution",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "resolution",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "resolved_on",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "resolved_on",
+                                    "type": "DateTime",
+                                    "physicalType": "date"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "cancel_reason",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "cancel_reason",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "comm_forfeit",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "comm_forfeit",
+                                    "type": "Boolean",
+                                    "physicalType": "boolean"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": false,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "ds_xlsx_bookings",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "ds_pg_bookings",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "cp_brokers",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "cp_plots",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ExcelSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        }
+                    },
+                    "sink": {
+                        "type": "AzurePostgreSqlSink",
+                        "writeBatchSize": 1000000,
+                        "writeBatchTimeout": "00:30:00",
+                        "writeMethod": "Upsert",
+                        "upsertSettings": {
+                            "keys": [
+                                "broker_id"
+                            ]
+                        }
+                    },
+                    "enableStaging": false,
+                    "parallelCopies": 1,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "broker_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "broker_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "name",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "name",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "joined_on",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "joined_on",
+                                    "type": "DateTime",
+                                    "physicalType": "date"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "is_active",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "is_active",
+                                    "type": "Boolean",
+                                    "physicalType": "boolean"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": false,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "ds_xlsx_brokers",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "ds_pg_brokers",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "cp_booking_buyers",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "cp_bookings",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ExcelSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        }
+                    },
+                    "sink": {
+                        "type": "AzurePostgreSqlSink",
+                        "writeBatchSize": 1000000,
+                        "writeBatchTimeout": "00:30:00",
+                        "writeMethod": "Upsert",
+                        "upsertSettings": {
+                            "keys": [
+                                "buyer_id",
+                                "booking_id"
+                            ]
+                        }
+                    },
+                    "enableStaging": false,
+                    "parallelCopies": 1,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "booking_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "booking_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "buyer_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "buyer_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "name",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "name",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "gender",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "gender",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "relation",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "relation",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "is_primary",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "is_primary",
+                                    "type": "Boolean",
+                                    "physicalType": "boolean"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": false,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "ds_xlsx_booking_buyers",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "ds_pg_booking_buyers",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "cp_payment_schedule",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "cp_booking_buyers",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ExcelSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        }
+                    },
+                    "sink": {
+                        "type": "AzurePostgreSqlSink",
+                        "writeBatchSize": 1000000,
+                        "writeBatchTimeout": "00:30:00",
+                        "writeMethod": "Upsert",
+                        "upsertSettings": {
+                            "keys": [
+                                "due_id"
+                            ]
+                        }
+                    },
+                    "enableStaging": false,
+                    "parallelCopies": 1,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "due_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "due_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "booking_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "booking_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "component",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "component",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "inst_no",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "inst_no",
+                                    "type": "Int32",
+                                    "physicalType": "integer"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "due_on",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "due_on",
+                                    "type": "DateTime",
+                                    "physicalType": "date"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "due_amt",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "due_amt",
+                                    "type": "Decimal",
+                                    "physicalType": "numeric"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": false,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "ds_xlsx_payment_schedule",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "ds_pg_payment_schedule",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "cp_government_charges",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "cp_payment_schedule",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ExcelSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        }
+                    },
+                    "sink": {
+                        "type": "AzurePostgreSqlSink",
+                        "writeBatchSize": 1000000,
+                        "writeBatchTimeout": "00:30:00",
+                        "writeMethod": "Upsert",
+                        "upsertSettings": {
+                            "keys": [
+                                "charge_id"
+                            ]
+                        }
+                    },
+                    "enableStaging": false,
+                    "parallelCopies": 1,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "charge_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "charge_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "booking_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "booking_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "charge_type",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "charge_type",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "assessed_on",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "assessed_on",
+                                    "type": "DateTime",
+                                    "physicalType": "date"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "base_value",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "base_value",
+                                    "type": "Decimal",
+                                    "physicalType": "numeric"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "rate",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "rate",
+                                    "type": "Decimal",
+                                    "physicalType": "numeric"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "amount",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "amount",
+                                    "type": "Decimal",
+                                    "physicalType": "numeric"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "nonrefund_amt",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "nonrefund_amt",
+                                    "type": "Decimal",
+                                    "physicalType": "numeric"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "treatment",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "treatment",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "basis_status",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "basis_status",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": false,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "ds_xlsx_government_charges",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "ds_pg_government_charges",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "cp_payments",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "cp_government_charges",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ExcelSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        }
+                    },
+                    "sink": {
+                        "type": "AzurePostgreSqlSink",
+                        "writeBatchSize": 1000000,
+                        "writeBatchTimeout": "00:30:00",
+                        "writeMethod": "Upsert",
+                        "upsertSettings": {
+                            "keys": [
+                                "pay_id"
+                            ]
+                        }
+                    },
+                    "enableStaging": false,
+                    "parallelCopies": 1,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "pay_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "pay_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "txn_ref",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "txn_ref",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "booking_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "booking_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "due_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "due_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "charge_id",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "charge_id",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "txn_on",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "txn_on",
+                                    "type": "DateTime",
+                                    "physicalType": "date"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "component",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "component",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "entry_type",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "entry_type",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "amount",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "amount",
+                                    "type": "Decimal",
+                                    "physicalType": "numeric"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "verify_status",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "verify_status",
+                                    "type": "String",
+                                    "physicalType": "text"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": false,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "ds_xlsx_payments",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "ds_pg_payments",
+                        "type": "DatasetReference"
+                    }
+                ]
+            }
+        ],
+        "annotations": []
+    }
+}
